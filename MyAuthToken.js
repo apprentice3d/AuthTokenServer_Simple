@@ -24,12 +24,11 @@ function MyAuthToken(env)
     if (env === "PROD") {
         this.tokenService = "http://localhost:5000/auth";
     }
-    else if (env === "STG") {
-        this.tokenService = "http://localhost:5000/auth-stg";
-    }
-    else if (env === "DEV") {
-        this.tokenService = "http://localhost:5000/auth-dev";
-    }
+    // TIP: You can add other environments like below:
+    // else if (env === "STG") {
+    //     this.tokenService = "http://localhost:5000/auth-stg";
+    // }
+
     else {
         alert("DEVELOPER ERROR: No valid environment set for MyAuthToken()");
     }

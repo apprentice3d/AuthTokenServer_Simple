@@ -21,6 +21,7 @@
 
 var https = require("https");
 var express = require("express");
+var credentials = require("./credentials").credentials;
 
 var app = express();
 
@@ -74,22 +75,16 @@ function getAuthCode(mainResponse, baseUrl, clientId, clientSecret) {
 
 app.get("/auth", function(req, res) {
     console.log("AuthTokenServer: getting PRODUCTION token...");
-        // ***** PUT YOUR PRODUCTION KEYS HERE *****
-    getAuthCode(res, "developer.api.autodesk.com", "MyConsumerKey", "MyConsumerSecret");
+        // ***** PUT YOUR PRODUCTION KEYS INTO CREDENTIALS.JS FILE *****
+    getAuthCode(res, "developer.api.autodesk.com", credentials.client_id, credentials.client_secret);
 });
 
-app.get("/auth-stg", function(req, res) {
-    console.log("AuthTokenServer: getting STAGING token...");
-        // ***** PUT YOUR STAGING KEYS HERE *****
-    getAuthCode(res, "developer-stg.api.autodesk.com", "MyConsumerKey", "MyConsumerSecret");
-});
-
-app.get("/auth-dev", function(req, res) {
-        // need endpoint and keys for DEV
-    console.log("AuthTokenServer: getting DEV token...");
-        // ***** PUT YOUR DEV KEYS HERE *****
-    getAuthCode(res, "developer-dev.api.autodesk.com", "MyConsumerKey", "MyConsumerSecret");
-});
+//TIP: If you have several environments, you can set here the route for other environment like below:
+// app.get("/auth-stg", function(req, res) {
+//     console.log("AuthTokenServer: getting STAGING token...");
+//         // ***** PUT YOUR STAGING KEYS HERE *****
+//     getAuthCode(res, "developer-stg.api.autodesk.com", credentials.client_id, credentials.client_secret);
+// });
 
 // test route to make sure everything is working
 app.get("/", function(req, res) {
