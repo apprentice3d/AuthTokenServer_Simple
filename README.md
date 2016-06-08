@@ -1,6 +1,6 @@
 ## Example of an Authentication Token Server for Autodesk Viewing and Data API
 
-[![build status](https://travis-ci.org/apprentice3d/AuthTokenServer_Simple.svg)](https://travis-ci.org/apprentice3d/AuthTokenServer_Simple)
+[![build status](https://travis-ci.org/apprentice3d/oauth-nodejs-basic.sample.svg)](https://travis-ci.org/apprentice3d/oauth-nodejs-basic.sample)
 
 
 INSTRUCTIONS - Setting up a simple AuthTokenServer using Node.js
