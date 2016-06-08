@@ -16,7 +16,7 @@ INSTRUCTIONS - Setting up a simple AuthTokenServer using Node.js
   4)  Open the package.json file that you unzipped in step 2 and make sure the version of Express matches what you got in the previous step
 
   5)  Install the proper version of Express.  (make sure you are in the directory with the package.json file)
-          command:  npm install   (NOTE: you may to have super-user privilidges.  On MacOS, use "sudo" command)
+          command:  npm install   (NOTE: you may to have super-user privileges.  On MacOS, use "sudo" command)
 
   6)  Edit the file AuthTokenServer.js and change the placeholder keys at the bottom with the keys you received from the Developer Portal:  https://developer.autodesk.com
 

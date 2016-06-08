@@ -1,23 +1,21 @@
-// INSTRUCTIONS - Setting up a simple AuthTokenServer using Node.js
+/////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) Autodesk, Inc. All rights reserved
+// Written by Jim Awe		2014
+// Updated by Denis Grigor	2016
 //
-//  1)  Install node.js:  http://nodejs.org/download/
-//  2)  Download this file and its directory and unzip it (assuming you've already done that step if you are reading this!)
-//  3)  Install Express for Node.js.  A good tutorial here:  http://expressjs.com/guide.html  (but skip to next step to do required actions)
-//          command:  npm info express version
-//      that will give you the current version of Express. 
-//  4)  Open the package.json file that you unzipped in step 2 and make sure the version of Express matches what you got in the previous step
-//  5)  Install the proper version of Express.  (make sure you are in the directory with the package.json file)
-//          command:  npm install   (NOTE: you may be to have super-user privilidges.  On MacOS, use "sudo" command)
-//  6)  Edit this file and change the placeholder keys below with the keys you recieved from the Developer Portal:  https://developer.autodesk.com
-//  7)  From Terminal window, type the following command:
-//          command: node AuthTokenServer.js
+// Permission to use, copy, modify, and distribute this software in
+// object code form for any purpose and without fee is hereby granted,
+// provided that the above copyright notice appears in all copies and
+// that both that copyright notice and the limited warranty and
+// restricted rights notice below appear in all supporting
+// documentation.
 //
-//  8)  Test by going to the Chrome browser and type in the following URL:  http://127.0.0.1:5000/auth
-//          you should get a response like:  {"token_type":"Bearer","expires_in":1799,"access_token":"m2Y1gIgXYZZZZZZNzYgmQYoqK0"}
-//
-//  9)  Now, from your actual browser app, you need to make an HTTP request to that same URL and then use the "access_token" to pass on to 
-//      your API calls for the Viewing Service.  See sample apps for a class called "MyAuthToken" for an example of how to do this.
-
+// AUTODESK PROVIDES THIS PROGRAM "AS IS" AND WITH ALL FAULTS.
+// AUTODESK SPECIFICALLY DISCLAIMS ANY IMPLIED WARRANTY OF
+// MERCHANTABILITY OR FITNESS FOR A PARTICULAR USE.  AUTODESK, INC.
+// DOES NOT WARRANT THAT THE OPERATION OF THE PROGRAM WILL BE
+// UNINTERRUPTED OR ERROR FREE.
+/////////////////////////////////////////////////////////////////////////////////
 
 var https = require("https");
 var express = require("express");
@@ -25,9 +23,8 @@ var credentials = require("./credentials").credentials;
 
 var app = express();
 
-// Call the Autodesk authentication API to get a token based on our client_id and client_secret.
-// When we get a response, forward that response on to the browser-based app that called us needing
-// the token.
+// Call the Autodesk authentication API to get a token based on client_id and client_secret.
+// When a response is received, it is forwarded to the browser-based app that called for a token.
 
 function getAuthCode(mainResponse, baseUrl, clientId, clientSecret) {
 	var dataString = "client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=client_credentials";
@@ -41,12 +38,7 @@ function getAuthCode(mainResponse, baseUrl, clientId, clientSecret) {
   		port: 443,
   		path: "/authentication/v1/authenticate",
   		method: "POST",
-  		headers: headers,
-
-  		// only for dev!
-  		rejectUnauthorized: false,
-        requestCert: true,
-        agent: false
+  		headers: headers
 	};
 
 	var req = https.request(options, function(res) {
@@ -69,9 +61,10 @@ function getAuthCode(mainResponse, baseUrl, clientId, clientSecret) {
     req.end();
 }
 
-// these are the URLs the browser based app will send to us to get the token.  Send one appropriate for the
-// given environment.  If you only have keys for the PRODUCTION environment, then just replace those below,
-// otherwise you can replace them all and easily switch environments from your browser app.
+// these are the URLs the browser based app will send to get the token. You may have several environments and you
+// can send one appropriate for the given environment.
+// If you only have keys for the PRODUCTION environment, then just replace them in credentials.js file,
+// otherwise you can specify different credential files or several credentials in the same file.
 
 app.get("/auth", function(req, res) {
     console.log("AuthTokenServer: getting PRODUCTION token...");
@@ -91,5 +84,7 @@ app.get("/", function(req, res) {
     res.send("I'm alive!");
 });
 
-app.listen(process.env.PORT || 5000);
+var listener = app.listen(process.env.PORT || 5000, function(){
+	console.log("Server started on port "+ listener.address().port);
+});
 
